@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lab Terminal</title>
+    <link rel='icon' href='iconn.png'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Welcome to Lab Terminal, your source for scientific content.">
+    <meta name="keywords" content="Science, Lab, Terminal, Research, Knowledge">
+    <meta name="author" content="Yunus Emre Vurgun">
+    <link rel="canonical" href="https://lab.gor.bio/">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lab.gor.bio/">
+    <meta property="og:title" content="Lab Terminal">
+    <meta property="og:description" content="Welcome to Lab Terminal, your source for scientific content.">
+    <meta property="og:image" content="IMAGE_URL">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://lab.gor.bio/">
+    <meta property="twitter:title" content="Lab Terminal">
+    <meta property="twitter:description" content="Welcome to Lab Terminal, your source for scientific content.">
+    <meta property="twitter:image" content="IMAGE_URL">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Start Open Web Analytics Tracker -->
+<script type="text/javascript">
+//<![CDATA[
+var owa_baseUrl = 'https://gor.bio/analytics/';
+var owa_cmds = owa_cmds || [];
+owa_cmds.push(['setSiteId', '143eec45312970ec46feb6d7199e334e']);
+owa_cmds.push(['trackPageView']);
+owa_cmds.push(['trackClicks']);
+
+(function() {
+    var _owa = document.createElement('script'); _owa.type = 'text/javascript'; _owa.async = true;
+    owa_baseUrl = ('https:' == document.location.protocol ? window.owa_baseSecUrl || owa_baseUrl.replace(/http:/, 'https:') : owa_baseUrl );
+    _owa.src = owa_baseUrl + 'modules/base/dist/owa.tracker.js';
+    var _owa_s = document.getElementsByTagName('script')[0]; _owa_s.parentNode.insertBefore(_owa, _owa_s);
+}());
+//]]>
+</script>
+<!-- End Open Web Analytics Code -->
+
+        
+       <style>
+       a{
+           color:lime;
+       }
+       #not-popup{
+          opacity:0.2; 
+       }
+        #wave-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 2400px;
+            height: 2400px;
+            overflow: hidden;
+        }
+        
+        .wave {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid #FFF;
+            opacity: 0;
+            animation: wave-animation 2s linear infinite;
+        }
+        
+        @keyframes wave-animation {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(2);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(3);
+                opacity: 0;
+            }
+        }
+    </style>
+    
+    <style>
+        body {
+            background-color: black;
+            color: lime;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        #worldspin {
+            width: 20%;
+            float: right;
+        }
+
+        h1 {
+            text-decoration: underline;
+        }
+        #terminalText {
+            white-space: pre-wrap;
+        }
+        #userInput {
+            background-color: black;
+            color: lime;
+            border: none;
+            outline: none;
+            width: 100%;
+        }
+     
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        #noise {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  opacity: 0.4;
+  z-index: 9999;
+}
+
+    </style>
+</head>
+<body>    
+
+<div id='not-popup'>
+
+
+ 
+    <h1>Welcome to Lab Terminal</h1>
+    <div id="terminalText">
+        SYSTEM BOOT COMPLETE...<br>
+        INITIALIZING SYSTEM...<br>
+        WELCOME TO LAB TERMINAL...<br>
+        READY FOR INPUT...<br>
+    </div>
+  
+    <input type="text" id="userInput" >
+    <img id="worldspin" src="worldspin.gif">
+
+    <canvas id="noise"></canvas>
+  <script>
+    var terminalText = document.getElementById('terminalText');
+    var userInputContent = document.getElementById('userInputContent');
+    var userInput = document.getElementById('userInput');
+
+    userInput.oninput = function() {
+        userInputContent.textContent = userInput.value;
+    }
+
+ 
+
+    var canvas = document.getElementById('noise');
+    var ctx = canvas.getContext('2d');
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function draw() {
+        var imageData = ctx.createImageData(canvas.width, canvas.height);
+        var data = imageData.data;
+        for (var i = 0; i < data.length; i += 4) {
+            var value = Math.random() < 0.05 ? Math.random() * 255 : 0;
+            data[i] = value;        // red
+            data[i + 1] = value;    // green
+            data[i + 2] = value;    // blue
+            data[i + 3] = 255;      // alpha
+        }
+        ctx.putImageData(imageData, 0, 0);
+    }
+
+    function animate() {
+        draw();
+        setTimeout(animate, Math.random() * 100);
+    }
+
+    window.onresize = resize;
+    resize();
+    animate();
+
+    function createAsteroids() {
+        var asteroidContainer = document.createElement('div');
+        asteroidContainer.id = 'asteroidContainer';
+        document.body.appendChild(asteroidContainer);
+
+        var asteroids = [];
+
+        function createAsteroid() {
+            var asteroid = document.createElement('img');
+            asteroid.src = 'Animation_of_Crystal_Structure_of_WurtziteVarTwo.gif';
+            asteroid.style.position = 'absolute';
+            asteroid.style.zIndex = '-1'; // Position behind all other elements
+            var asteroidSize = Math.floor(Math.random() * 81) + 50; // Random width between 50px and 130px
+            asteroid.style.width = asteroidSize + 'px';
+            asteroid.style.height = asteroidSize + 'px';
+            asteroidContainer.appendChild(asteroid);
+            var randomMargin= Math.floor(Math.random()*76)+15;
+           asteroid.style.marginLeft=`${randomMargin}px`;
+                      asteroid.style.marginRight=`${randomMargin}px`;
+
+            asteroids.push(asteroid);
+        }
+
+        for (var i = 0; i < 5; i++) {
+            createAsteroid();
+        }
+
+        var timeout;
+
+  function moveAsteroids() {
+  for (var i = 0; i < asteroids.length; i++) {
+    var asteroid = asteroids[i];
+
+    var asteroidX = asteroid.offsetLeft;
+    var asteroidY = asteroid.offsetTop;
+
+    var newX = Math.random() * (Math.min(window.innerWidth, 500) - asteroid.offsetWidth);
+    var newY = Math.random() * (Math.min(window.innerHeight, 500) - asteroid.offsetHeight);
+
+    var distance = Math.sqrt(Math.pow(newX - asteroidX, 2) + Math.pow(newY - asteroidY, 2));
+    var speed = distance / 50; // Adjust the speed as desired
+
+    asteroid.style.transition = `transform ${speed}s ease-in-out`;
+    asteroid.style.transform = `translate(${newX}px, ${newY}px)`;
+  }            timeout = setTimeout(moveAsteroids, 4000); // Repeat the movement every 4 seconds
+
+}
+
+
+ 
+
+        // Initial movement of the asteroids
+        moveAsteroids();
+
+        // Resize the canvas to fit the user's view
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        // Call the resize function
+        resize();
+
+        // Add resize event listener to update canvas dimensions when the window is resized
+        window.addEventListener('resize', resize);
+    }
+
+    // Call the function to create and move the asteroids
+    createAsteroids();
+
+    function moveAsteroids() {
+        for (var i = 0; i < asteroids.length; i++) {
+            var asteroid = asteroids[i];
+
+            // Get the current position of the asteroid.
+            var asteroidX = asteroid.offsetLeft;
+            var asteroidY = asteroid.offsetTop;
+
+            // Get the width and height of the visible area.
+            var visibleWidth = Math.min(window.innerWidth, 500);
+            var visibleHeight = Math.min(window.innerHeight, 500);
+
+            // Check if the asteroid is outside the visible area.
+            if (asteroidX < 0 || asteroidX > visibleWidth) {
+                // Move the asteroid back inside the visible area.
+                asteroidX = Math.max(0, Math.min(visibleWidth - asteroid.offsetWidth, asteroidX));
+            }
+
+            if (asteroidY < 0 || asteroidY > visibleHeight) {
+                // Move the asteroid back inside the visible area.
+                asteroidY = Math.max(0, Math.min(visibleHeight - asteroid.offsetHeight, asteroidY));
+            }
+
+            // Update the position of the asteroid.
+            asteroid.style.left = asteroidX + 'px';
+            asteroid.style.top = asteroidY + 'px';
+        }
+    }
+    moveAsteroids();
+    
+    
+    function fitCanvasToScreen(canvas) {
+  // Get the viewport dimensions
+  var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+  var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+  // Set the canvas dimensions to match the viewport
+  canvas.width = width;
+  canvas.height = height;
+}
+
+// Example usage
+var canvas = document.getElementById('myCanvas');
+fitCanvasToScreen(canvas);
+
+
+window.addEventListener('resize', function() {
+  fitCanvasToScreen(canvas);
+});
+ 
+ 
+        
+
+</script> 
+
+ 
+<script>
+        function createWaveAnimation() {
+            var container = document.getElementById('wave-container');
+            
+            var wave = document.createElement('div');
+            wave.className = 'wave';
+            container.appendChild(wave);
+        }
+        
+        createWaveAnimation();
+    </script>
+      
+      
+      
+    <style>
+        #popupmenu {
+            font-size:26px;
+         }
+    </style>
+  
+ <br>
+    <div class="terminal-table"><br><br>
+    <div class="">About Lab.gor.bio</div><br><br><br><div style="        border-bottom: 1px dashed lime;"><br><br><br></div>
+        <div class="cell">Lab by Gorbio is a website</div>
+        <div class="cell">dedicated to science. We publish</div>
+        <div class="cell">free-to-share scientific content.</div>
+
+        <div class="header-row">
+            <div class="cell">About The dev</div>
+        </div>
+        
+        <div class="header-row">
+            <div class="cell">ID</div>
+            <div class="cell">Name</div>
+            <div class="cell">Email</div>
+            <div class="cell">Description</div>
+        </div>
+        
+        <div class="row">
+            <div class="cell">38658758345</div>
+            <div class="cell">Yunus Emre Vurgun</div>
+            <div class="cell">yunusemrevurgun@hotmail.com</div>
+            <div class="cell">Computer Programmer</div>
+        </div>
+    </div>    <style>
+        .terminal-table {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            font-family: monospace;
+            background-color: black;
+            color: lime;
+            padding: 1px;
+            white-space: pre;
+            line-height: 0.1;
+        }
+        
+        .terminal-table .header-row {
+            border-bottom: 1px solid lime;
+        }
+        
+        .terminal-table .row {
+            border-bottom: 1px dashed lime;
+        }
+        
+        .terminal-table .cell {
+            padding: 5px;
+        }
+    </style>
+  <script>
+        $(document).ready(function() {
+            var mediaQuery = window.matchMedia('(max-width: 767px)'); // Adjust the max-width value as needed
+            
+            if (mediaQuery.matches) {
+                $('.terminal-table').hide();
+                $('body').css('overflow-x', 'hidden');
+                $('body').css('overflow-y', 'hidden');
+            }
+        });
+        
+        
+        $('#userInput').hide();
+    </script> <style>
+        /* Your style content here */
+        @media (max-width: 767px) {
+            * {
+                overflow: hidden;
+            }
+        }
+        #wave-container,#asteroidContainer{
+            opacity:0.2;
+        }
+    </style>
+    
+    </div>
+    
+<div id="popupmenu">
+    
+    <!--MENU-ITEMS-COME-HERE-->
+    <a href='Mathematics'>🔢 Mathematics</a> | <a href='Physics'>⚛️ ️Physics</a> | 
+    <a href='Chemistry'>🧪 Chemistry</a> |<br> <a href='Biology'>🐍 Biology</a> | 
+    <a href='Astronomy'>🔭 Astronomy</a> | <a href='Geology'>🌎 Geology</a> | <br>
+    <a href='Sociology'>📚 Sociology</a> | <a href='Statistics'>📊 Statistics</a>
+
+</div>
+</body>
+</html>

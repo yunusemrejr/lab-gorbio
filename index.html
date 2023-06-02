@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lab Terminal</title>
+    <link rel='icon' href='iconn.png'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Welcome to Lab Terminal, your source for scientific content in English.">
+    <meta name="keywords" content="Science, Lab, Terminal, Research, Copyright-free,royalty free">
+    <meta name="author" content="Yunus Emre Vurgun">
+    <link rel="canonical" href="https://lab.gor.bio/">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lab.gor.bio/">
+    <meta property="og:title" content="Lab Terminal -  Gor.bio">
+    <meta property="og:description" content="Welcome to Lab Terminal, your source for free and unique scientific content.">
+      <meta property="twitter:url" content="https://lab.gor.bio/">
+    <meta property="twitter:title" content="Lab Terminal">
+    <meta property="twitter:description" content="Welcome to Lab Terminal, your source for scientific content.">
+    
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Start Open Web Analytics Tracker -->
+<script type="text/javascript">
+//<![CDATA[
+var owa_baseUrl = 'https://gor.bio/analytics/';
+var owa_cmds = owa_cmds || [];
+owa_cmds.push(['setSiteId', '143eec45312970ec46feb6d7199e334e']);
+owa_cmds.push(['trackPageView']);
+owa_cmds.push(['trackClicks']);
+
+(function() {
+    var _owa = document.createElement('script'); _owa.type = 'text/javascript'; _owa.async = true;
+    owa_baseUrl = ('https:' == document.location.protocol ? window.owa_baseSecUrl || owa_baseUrl.replace(/http:/, 'https:') : owa_baseUrl );
+    _owa.src = owa_baseUrl + 'modules/base/dist/owa.tracker.js';
+    var _owa_s = document.getElementsByTagName('script')[0]; _owa_s.parentNode.insertBefore(_owa, _owa_s);
+}());
+//]]>
+</script>
+<!-- End Open Web Analytics Code -->
+
+        
+       <style>
+        #wave-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-10%, -50%);
+            width: 2400px;
+            height: 2400px;
+            overflow: hidden;
+        }
+        
+        .wave {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            border-radius: 70%;
+            border: 5px solid #FFF;
+             animation: wave-animation 2s linear infinite;
+        }
+        
+        @keyframes wave-animation {
+            0% {
+                transform: scale(0);
+                opacity: 0.7;
+            }
+            50% {
+                transform: scale(2);
+                opacity: 0.2;
+            }
+            75% {
+                transform: scale(3);
+                opacity: 0.1;
+            }
+            100% {
+                transform: scale(3);
+                opacity: 0;
+            }
+        }
+     
+        body {
+            background-color: black;
+            color: lime;
+            font-family: 'Courier New', monospace;
+            padding: 18px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        #worldspin {
+            width: 20%;
+            float: right;
+        }
+
+        h1 {
+            text-decoration: underline;
+        }
+        
+        #userInput {
+            background-color: black;
+            color: lime;
+            border: none;
+            outline: none;
+            font-family:'Courier New', monospace;
+            font-size: 20px;
+            width: 100%;
+        }
+      
+        #noise {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  opacity: 0.4;
+  z-index: 999;
+}
+
+    </style>
+</head>
+<body>    
+
+<div id="wave-container"></div> <!--contains_the_radio_wave_circular-->
+
+    <h1>Welcome to Lab Terminal</h1>
+    
+    <div id="terminalText">
+        SYSTEM BOOT COMPLETE...<br>
+        INITIALIZING UNIX...<br>
+        WELCOME TO LAB TERMINAL...<br>
+        READY FOR SCIENTIFIC INPUT...<br>
+    </div>
+    
+    
+    <div id="inputLine">
+        <span id="userInputContent"></span>
+        
+        <span id="cursor">_</span>
+        
+    </div>
+    
+    
+    <input type="text" id="userInput" autofocus>
+    
+    
+    <img id="worldspin" src="worldspin.gif">
+
+
+    <canvas id="noise"></canvas>
+    
+    
+  <script>
+    var terminalText = document.getElementById('terminalText'); //SYSTEM BOOT...
+    var userInputContent = document.getElementById('userInputContent'); //INPUTVIEW
+    var userInput = document.getElementById('userInput'); //INPUT ITSELF / BOX
+
+    userInput.oninput = function() {
+        userInputContent.textContent = userInput.value; //WRITE INPUT TO VIEW LIVE
+    }
+
+    userInput.onkeydown = function(event) {
+        if (event.key === 'Enter') {
+            terminalText.innerHTML = '<br>' + userInputContent.textContent;
+            userInput.value = '';
+            userInputContent.textContent = '';
+            terminalText.innerHTML += '<br>YOUR INPUT GIVES ME AN IDEA, PLEASE WAIT...';
+            var countdown = 5;
+            
+            var countdownInterval =
+            
+            setInterval(function() { //THIS FUNCTION UPDATES THE COUNTDOWN TEXT EVERY 1 SECOND IN THE DOM
+                
+                terminalText.innerHTML = '<br>' + countdown;
+                countdown--;
+                if (countdown <= 0) {
+                    clearInterval(countdownInterval);
+                    window.location.href = 'main.html';
+                }
+            }, 1000); //setInterval(function, ms)
+        }
+    }
+
+    var canvas = document.getElementById('noise'); //canvas for the noise that is like old tv
+    let context_of_canvas = canvas.getContext('2d'); //canvas HTML element can be used to render both 2d and 3d graphics so we put 2d -yunus
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+
+    function draw() { //draw the canvas
+    
+        var imageData = context_of_canvas.createImageData(canvas.width, canvas.height); //image data does this job --> get the dimentions of the canvas -> create a grid out of it (just like a math notebook sheet where instead of lines we have grids) -> now we can manipulate each element of the grid/pixels
+        
+        var data = imageData.data; //gets pixel data array from the obj. each pixel is represented with these properties: {R,G,B, Alpha}
+        
+        for (let i = 0; i < data.length; i += 4) { //why +4 for i??? Because each 'i' has 4 values assigned to them as mentioned above
+        
+            //the below 'value' variable is determined this way: is [random value] smaller than 0.05 '?' if so, [random value] will be between 0 and 255. if [random value] is not (else) smaller than 0.05, then return 0 as the value of variable.
+            
+            var value = Math.random() < 0.05 ? Math.random() * 255 : 0;
+            data[i] = value;        // red property of pixel is random
+            data[i + 1] = value;    // green property of pixel is random
+            data[i + 2] = value;    // blue property of pixel is random
+            data[i + 3] = 255;      // alpha property of pixel set to fully visible
+        }
+        context_of_canvas.putImageData(imageData, 0, 0); //apply to canvas on coordinates (0,0) which is top-left corner of canvas. this makes the printing of pixels starting from (0,0) and NOT stack all of them there
+    }
+
+    function animate() {
+        draw();
+        setTimeout(animate, Math.random() * 100); //between 0-100 ms repeat random pixels of the canvas to make it look like noise
+    }
+
+//if user resizes the window, first call resize func that makes canvas adjust to new dimentions and call animate which is our noise animation function
+    window.onresize = resize;
+    resize();
+    animate();
+
+
+/*
+------CREATE ASTEROIDS IS THE GEOMETRIC SHAPE IMAGE YOU SEE FLOATING AROND-----
+
+
+*/
+    function createAsteroids() {
+        var asteroidContainer = document.createElement('div');
+        asteroidContainer.id = 'asteroidContainer';
+        document.body.appendChild(asteroidContainer);
+
+        var asteroids = [];
+
+        function createAsteroid() {
+            var asteroid = document.createElement('img');
+            asteroid.src = 'Animation_of_Crystal_Structure_of_WurtziteVarTwo.gif';
+            asteroid.style.position = 'absolute';
+            asteroid.style.zIndex = '-1'; // Position behind all other elements
+            
+            var asteroidSize = Math.floor(Math.random() * 81) + 50; // Random width between 50px and 130px
+            asteroid.style.width = asteroidSize + 'px';
+            asteroid.style.height = asteroidSize + 'px';
+            asteroidContainer.appendChild(asteroid);
+            var randomMargin= Math.floor(Math.random()*76)+15; //RANDOM VALUE BETWEEN 15 AND 76+14-> 15-90
+            
+           asteroid.style.marginLeft=`${randomMargin}px`;
+                      asteroid.style.marginRight=`${randomMargin}px`;
+
+            asteroids.push(asteroid); //add random margined asteroid to asteroids array
+        }
+
+        for (var i = 0; i < 5; i++) { //create 5 different asteroids like the above
+            createAsteroid();
+        }
+
+        var timeout;
+
+  function moveAsteroids() { //moves asteroids using geometry rules
+  for (var i = 0; i < asteroids.length; i++) { //for each asteroid
+    var asteroid = asteroids[i]; //the asteroid
+
+    var asteroidX = asteroid.offsetLeft; //asteroids location horizontally
+    var asteroidY = asteroid.offsetTop; // same but vertically
+
+    var newX = Math.random() * (Math.min(window.innerWidth, 800) - asteroid.offsetWidth); //returns the random new X coordinate considering it to be determined by a random new value which has to be not more than 800 no matter the screen size and if the screen size is less than 800 then picks the smaller one which is the screen width
+    
+    //same logic for Y coordinate
+    var newY = Math.random() * (Math.min(window.innerHeight, 800) - asteroid.offsetHeight);
+
+
+//squareroot[(x2 - x1)^2 + (y2 - y1)^2]
+    var distance = Math.sqrt(Math.pow(newX - asteroidX, 2) + Math.pow(newY - asteroidY, 2));
+    var speed = distance / 50; // Adjust the speed as desired by dividing by 50 which is a constant that applies no matter the speed distance value
+
+    asteroid.style.transition = `transform ${speed}s ease-in-out`; //CSS animation set
+    asteroid.style.transform = `translate(${newX}px, ${newY}px)`; //CSS new size
+  }         
+  
+  timeout = setTimeout(moveAsteroids, 4000); // Repeat the movement every 4 seconds
+
+}
+
+
+ 
+        // first movement of the asteroids
+        moveAsteroids();
+
+        // Resize the canvas to fit the user's view
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        // Call the resize function
+        resize();
+
+        // Add resize event listener to update canvas dimensions when the window is resized
+        window.addEventListener('resize', resize);
+    }
+
+    // Call the function to create and move the asteroids
+    createAsteroids();
+
+
+    moveAsteroids();
+    
+    
+    function fitCanvasToScreen(canvas) {
+  // Get the viewport dimensions
+  var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+  var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+  // Set the canvas dimensions to match the viewport
+  canvas.width = width;
+  canvas.height = height;
+}
+
+// Example usage
+var canvas = document.getElementById('myCanvas');
+fitCanvasToScreen(canvas);
+
+
+window.addEventListener('resize', function() {
+  fitCanvasToScreen(canvas);
+});
+ 
+ 
+        
+
+</script> 
+
+ 
+<script>
+        function createWaveAnimation() {
+            var container = document.getElementById('wave-container');
+            
+            var wave = document.createElement('div');
+            wave.className = 'wave';
+            container.appendChild(wave);
+        }
+        
+        createWaveAnimation();
+    </script>
+      
+      
+      
+    <style>
+        body {
+            cursor: url('cur341.gif'), auto;
+        }
+    </style>
+    
+    <script>
+        function preventUnfocusing() {
+            var userInput = document.getElementById('userInput');
+
+            userInput.addEventListener('blur', function (event) {
+                event.preventDefault();
+                userInput.focus();
+            });
+        }preventUnfocusing();
+    </script>
+ <br>
+    <div class="terminal-table"><br><br>
+    <div class="">About Lab.gor.bio</div><br><br><br><div style="        border-bottom: 1px dashed lime;"><br><br><br></div>
+        <div class="cell">Lab by Gorbio is a website</div>
+        <div class="cell">dedicated to science. We publish</div>
+        <div class="cell">free-to-share scientific content.</div>
+
+        <div class="header-row">
+            <div class="cell">About The dev</div>
+        </div>
+        
+        <div class="header-row">
+            <div class="cell">ID</div>
+            <div class="cell">Name</div>
+            <div class="cell">Email</div>
+            <div class="cell">Description</div>
+        </div>
+        
+        <div class="row">
+            <div class="cell">38658758345</div>
+            <div class="cell">Yunus Emre Vurgun</div>
+            <div class="cell">yunusemrevurgun@hotmail.com</div>
+            <div class="cell">Computer Programmer</div>
+        </div>
+    </div>    <style>
+        .terminal-table {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            font-family: monospace;
+            background-color: black;
+            color: lime;
+            padding: 1px;
+            white-space: pre;
+            line-height: 0.1;
+        }
+        
+        .terminal-table .header-row {
+            border-bottom: 1px solid lime;
+        }
+        
+        .terminal-table .row {
+            border-bottom: 1px dashed lime;
+        }
+        
+        .terminal-table .cell {
+            padding: 5px;
+        }
+    </style>
+  <script>
+        $(document).ready(function() {
+            var mediaQuery = window.matchMedia('(max-width: 767px)'); // Adjust the max-width value as needed
+            
+            if (mediaQuery.matches) {
+                $('.terminal-table').hide();
+                $('body').css('overflow-x', 'hidden');
+                $('body').css('overflow-y', 'hidden');
+            }
+        });
+    </script> <style>
+        /* Your style content here */
+        @media (max-width: 767px) {
+            * {
+                overflow: hidden;
+            }
+        }
+    </style>
+
+</body>
+</html>
